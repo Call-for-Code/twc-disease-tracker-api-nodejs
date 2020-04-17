@@ -1,0 +1,25 @@
+{
+  "name": "twc-disease-tracker-api-nodejs",
+  "version": "0.0.1",
+  "description": "CLI using the Weather Company Data Disease Tracker API for COVID-19 reported cases",
+  "main": "covid-cli.js",
+  "bin": {
+    "covid-cli": "covid-cli.js"
+  },
+  "files": [
+    "covid-cli.js",
+    "lib/"
+  ],
+  "scripts": {
+    "start": "node covid-cli.js"
+  },
+  "dependencies": {
+    "commander": "^5.0.0",
+    "node-fetch": "^2.6.0"
+  },
+  "author": "va barbosa (https://github.com/vabarbosa/)",
+  "contributors": [
+    "Samuel Couch (https://github.com/samuelcouch)"
+  ],
+  "license": "Apache-2.0"
+}
