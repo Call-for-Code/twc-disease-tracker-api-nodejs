@@ -182,4 +182,4 @@ Now that you know how to connect your Node.js application to The Weather Company
 
 ## License
 
-This code is licensed under Apache 2.0. Full license text is available in [LICENSE](https://github.com/Call-for-Code/weather-api-nodejs/tree/master/LICENSE).
+This code is licensed under Apache 2.0. Full license text is available in [LICENSE](https://github.com/Call-for-Code/twc-disease-tracker-api-nodejs/blob/master/LICENSE).
