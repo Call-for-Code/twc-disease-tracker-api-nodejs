@@ -9,6 +9,18 @@ const utils = require('./lib/utils.js')
 
 const version = require(path.join(__dirname, 'package.json')).version
 
+const runGlobal = function (options) {
+  twcApi.getCovidGlobalStats()
+    .then(stats => {
+      if (options.json) {
+        console.log(stats)
+      } else {
+        utils.printGlobalStats(stats, ['recordLocation', 'totalPopulation', 'confirmed', 'deaths'])
+      }
+    })
+    .catch(console.error)
+}
+
 const run = function (locArg, options) {
   const location = utils.isPostalKey(locArg) ? locArg : utils.toGeocode(locArg)
 
@@ -25,20 +37,28 @@ const run = function (locArg, options) {
       return twcApi.getCovidStats(l, options)
     })
     .then(stats => {
-      utils.printStats(stats, ['dateReport', 'confirmed', 'deaths'], options.days)
+      if (options.json) {
+        console.log(stats)
+      } else {
+        utils.printStats(stats, ['dateReport', 'confirmed', 'deaths'], options.days)
+      }
     })
     .catch(console.error)
 }
 
 program
-  .description('Displays total accumlated COVID-19 reported cases for a given location')
+  .description(`Displays total accumlated COVID-19 reported cases for a given location.
+Location can be a geocode (e.g., '35.8436,-78.7854'), a postal key
+(e.g., '90210:US'), or an address (if a HERE API Key is configured).`)
   .usage('<location> [options]')
   .option('-h, --hereapikey <here_api_key>', 'HERE Location Services API key. Default is HERE_APIKEY environment variable')
   .option('-w, --twcapikey <twc_api_key>', 'The Weather Company API key. Default is TWC_APIKEY environment variable')
   .option('-l, --level <country|state|county>', 'Set the level of data to retrieve. Default is county')
   .option('-d, --days <num_of_days>', 'Number of past days (maximum 60) for reports. Default is 30 days')
-  .helpOption('-e, --help', 'display help information')
-  .version(version, '-v, --version')
+  .option('-g, --global', 'Display total counts for a set countries globally')
+  .option('-j, --json', 'Display the full JSON response from the TWC API')
+  .helpOption('-e, --help', 'Display help information')
+  .version(version, '-v, --version', 'Output the version number')
 
 program.parse(process.argv);
 
@@ -60,10 +80,15 @@ const commandOpts = {
   twcapikey: program.twcapikey,
   hereapikey: program.hereapikey,
   days: program.days || 14,
-  locationType: program.level
+  locationType: program.level,
+  json: program.json,
+  globally: program.global
 }
 
-if (commandArgs) {
+
+if (commandOpts.globally) {
+  runGlobal(commandOpts)
+} else if (commandArgs) {
   run(commandArgs, commandOpts)
 } else {
   console.error('command \'covid-cli <location>\' argument missing or invalid.\r\n')

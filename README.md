@@ -118,7 +118,7 @@ You can specify the (location) **level** of the data to retrieve or the number o
 
 - **Output**
 
-   When I ran that command, it returend these results:
+   When I ran that command, it returned these results:
    
    ```
    Total accumlated COVID-19 reported cases in the past
